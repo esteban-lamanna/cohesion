@@ -30,6 +30,7 @@ namespace CohesionTest
             services.AddTransient<IBuildingRepository, BuildingRepository>();
             services.AddTransient<IBuildingService, BuildingService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<INotificationService, NotificationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

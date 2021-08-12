@@ -4,6 +4,7 @@ using CohesionTest.Models.Responses;
 using CohesionTest.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -63,6 +64,41 @@ namespace CohesionTest.Controllers
             return Ok();
         }
 
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] UpdateServiceRequest updateServiceRequest)
+        {
+            var serviceRequest = await _serviceRequestService.GetByIdAsync(id);
+
+            if (serviceRequest == null)
+            {
+                _logger.LogError("invalid service request ID");
+                return BadRequest("invalid service request ID");
+            }
+
+            var validRequest = await ValidateUpdateRequestAsync(updateServiceRequest);
+
+            if (!validRequest.Item1)
+            {
+                _logger.LogError(validRequest.Item2);
+                return BadRequest(validRequest.Item2);
+            }
+
+            await _serviceRequestService.UpdateAsync(serviceRequest, updateServiceRequest);
+
+            return Ok();
+        }
+
+        private async Task<(bool, string)> ValidateUpdateRequestAsync(UpdateServiceRequest updateServiceRequest)
+        {
+            var user = await _userService.GetByIdAsync(updateServiceRequest.IdUser);
+
+            if (user == null)
+                return (false, "Invalid User");
+
+            return (true, null);
+        }
+
         private async Task<(bool, string)> ValidateRequestAsync(CreationOfServiceRequest creationOfServiceRequest)
         {
             var user = await _userService.GetByIdAsync(creationOfServiceRequest.IdUser);
@@ -85,7 +121,7 @@ namespace CohesionTest.Controllers
             entity.Building = await _buildingService.GetByCodeAsync(creationOfServiceRequest.BuildingCode);
 
             var user = await _userService.GetByIdAsync(creationOfServiceRequest.IdUser);
-            entity.SetEstado(ServiceRequest.PossibleStates.Created, user);
+            entity.SetStatus(ServiceRequest.PossibleStates.Created, user);
 
             return entity;
         }

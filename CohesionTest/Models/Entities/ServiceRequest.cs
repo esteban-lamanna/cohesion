@@ -24,7 +24,7 @@ namespace CohesionTest.Models.Entities
         {
             var serviceRequest = new ServiceRequest()
             {
-                CurrentState = ServiceRequest.PossibleStates.Created,
+                CurrentState = PossibleStates.Created,
                 Id = Guid.NewGuid(),
                 History = new List<History>()
             };
@@ -32,12 +32,14 @@ namespace CohesionTest.Models.Entities
             return serviceRequest;
         }
 
-        public void SetEstado(PossibleStates status, User user)
+        public void SetStatus(PossibleStates status, User user)
         {
+            CurrentState = status;
+
             History.Add(new History()
             {
                 Date = DateTime.UtcNow,
-                Id = new Guid(),
+                Id = Guid.NewGuid(),
                 User = user,
                 Status = status
             });

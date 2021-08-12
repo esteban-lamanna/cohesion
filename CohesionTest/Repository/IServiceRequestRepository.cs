@@ -7,5 +7,6 @@ namespace CohesionTest.Repository
     public interface IServiceRequestRepository
     {
         Task<IEnumerable<ServiceRequest>> GetAllAsync();
+        Task InsertAsync(ServiceRequest serviceRequest);
     }
 }

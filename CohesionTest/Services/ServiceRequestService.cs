@@ -14,6 +14,11 @@ namespace CohesionTest.Services
             _serviceRequestRepository = serviceRequestRepository;
         }
 
+        public async Task CreateAsync(ServiceRequest serviceRequest)
+        {
+            await _serviceRequestRepository.InsertAsync(serviceRequest);
+        }
+
         public async Task<IEnumerable<ServiceRequest>> GetAllAsync()
         {
             return await _serviceRequestRepository.GetAllAsync();

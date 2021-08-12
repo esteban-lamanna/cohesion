@@ -7,5 +7,6 @@ namespace CohesionTest.Models.Entities
         public Guid Id { get; set; }
         public User User { get; set; }
         public DateTime Date { get; set; }
+        public ServiceRequest.PossibleStates Status { get; set; }
     }
 }

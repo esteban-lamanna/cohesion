@@ -35,6 +35,15 @@ namespace CohesionTest.Services
             await _serviceRequestRepository.InsertAsync(serviceRequest);
         }
 
+        public async Task DeleteAsync(ServiceRequest serviceRequest)
+        {
+            await UpdateAsync(serviceRequest, new UpdateServiceRequest()
+            {
+                NewState = (int)ServiceRequest.PossibleStates.Canceled,
+                IdUser = serviceRequest.User.Id
+            });
+        }
+
         public async Task<IEnumerable<ServiceRequest>> GetAllAsync()
         {
             return await _serviceRequestRepository.GetAllAsync();

@@ -15,6 +15,7 @@ namespace UnitTests
         private Mock<IServiceRequestRepository> _serviceRequestRepository;
         private Mock<IUserRepository> _userRepository;
         private Mock<IServiceProvider> _serviceProvider;
+        private ServiceRequest _serviceRequest;
 
         [SetUp]
         public void Setup()
@@ -22,6 +23,17 @@ namespace UnitTests
             _serviceRequestRepository = new Mock<IServiceRequestRepository>();
             _userRepository = new Mock<IUserRepository>();
             _serviceProvider = new Mock<IServiceProvider>();
+
+            CreateMockServiceRequest();
+        }
+
+        private void CreateMockServiceRequest()
+        {
+            _serviceRequest = ServiceRequest.CreateInstance();
+            _serviceRequest.Building = MockData.EmpireState;
+            _serviceRequest.User = MockData.UserJohn;
+            _serviceRequest.Description = "test";
+            _serviceRequest.SetStatus(ServiceRequest.PossibleStates.Created, _serviceRequest.User);
         }
 
         [Test]
@@ -32,13 +44,8 @@ namespace UnitTests
                                                                   _serviceProvider.Object,
                                                                   new ApplicationOptions());
 
-            var serviceRequest = ServiceRequest.CreateInstance();
-            serviceRequest.Building = MockData.EmpireState;
-            serviceRequest.User = MockData.UserJohn;
-            serviceRequest.Description = "test";
-            serviceRequest.SetStatus(ServiceRequest.PossibleStates.Created, serviceRequest.User);
 
-            await serviceRequestService.CreateAsync(serviceRequest);
+            await serviceRequestService.CreateAsync(_serviceRequest);
 
             Assert.IsTrue(true);
         }

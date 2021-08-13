@@ -108,6 +108,13 @@ namespace CohesionTest.Controllers
         [Route("{id}")]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
+            var serviceRequest = await _serviceRequestService.GetByIdAsync(id);
+
+            if (serviceRequest == null)
+                return NotFound();
+
+            await _serviceRequestService.DeleteAsync(serviceRequest);
+
             return Ok();
         }
 

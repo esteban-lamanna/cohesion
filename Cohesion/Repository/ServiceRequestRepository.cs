@@ -31,7 +31,6 @@ namespace CohesionTest.Repository
         public async Task InsertAsync(ServiceRequest serviceRequest)
         {
             //suposing there is always a long delay accessing data
-
             await Task.Run(() =>
             {
                 _serviceRequests.Add(serviceRequest);

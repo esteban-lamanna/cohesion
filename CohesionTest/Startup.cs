@@ -22,7 +22,9 @@ namespace CohesionTest
         {
             services.AddControllers();
 
-            services.Configure<ApplicationOptions>(Configuration.GetSection(ApplicationOptions.Section));
+            var applicationOptions = new ApplicationOptions();
+            Configuration.GetSection(ApplicationOptions.Section).Bind(applicationOptions);
+            services.AddSingleton(applicationOptions);
 
             services.AddTransient<IServiceRequestService, ServiceRequestService>();
             services.AddTransient<IServiceRequestRepository, ServiceRequestRepository>();

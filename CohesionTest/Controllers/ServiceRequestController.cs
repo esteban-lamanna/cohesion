@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace CohesionTest.Controllers
@@ -75,7 +76,7 @@ namespace CohesionTest.Controllers
 
             await _serviceRequestService.CreateAsync(serviceRequest);
 
-            return Ok();
+            return StatusCode((int)HttpStatusCode.Created, serviceRequest.Id.ToString());
         }
 
         [HttpPut]
@@ -87,7 +88,7 @@ namespace CohesionTest.Controllers
             if (serviceRequest == null)
             {
                 _logger.LogError("invalid service request ID");
-                return BadRequest("invalid service request ID");
+                return NotFound();
             }
 
             var validRequest = await ValidateUpdateRequestAsync(updateServiceRequest);
@@ -100,6 +101,13 @@ namespace CohesionTest.Controllers
 
             await _serviceRequestService.UpdateAsync(serviceRequest, updateServiceRequest);
 
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteAsync(Guid id)
+        {
             return Ok();
         }
 

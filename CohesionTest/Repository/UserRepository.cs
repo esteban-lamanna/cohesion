@@ -16,6 +16,15 @@ namespace CohesionTest.Repository
             _users.Add(MockData.UserJohn);
         }
 
+        public async Task<IEnumerable<User>> GetAllAsync()
+        {
+            //suposing there is always a long delay accessing data
+            return await Task.Run(() =>
+            {
+                return _users;
+            });
+        }
+
         public async Task<User> GetByIdAsync(Guid id)
         {
             //suposing there is always a long delay accessing data

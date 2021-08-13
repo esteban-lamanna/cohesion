@@ -45,6 +45,20 @@ namespace CohesionTest.Controllers
             return Ok(servicesRequests.Select(a => (ServiceRequestResponse)a));
         }
 
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
+        {
+            var servicesRequest = await _serviceRequestService.GetByIdAsync(id);
+
+            if (servicesRequest == null)
+                return BadRequest();
+
+            return Ok((ServiceRequestResponse)servicesRequest);
+        }
+
+
         [HttpPost]
         [Route("")]
         public async Task<IActionResult> CreateAsync([FromBody] CreationOfServiceRequest creationOfServiceRequest)
@@ -121,6 +135,8 @@ namespace CohesionTest.Controllers
             entity.Building = await _buildingService.GetByCodeAsync(creationOfServiceRequest.BuildingCode);
 
             var user = await _userService.GetByIdAsync(creationOfServiceRequest.IdUser);
+            entity.User = user;
+
             entity.SetStatus(ServiceRequest.PossibleStates.Created, user);
 
             return entity;

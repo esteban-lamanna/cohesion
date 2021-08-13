@@ -15,6 +15,15 @@ namespace CohesionTest.Repository
             _buildings.Add(MockData.EmpireState);
         }
 
+        public async Task<IEnumerable<Building>> GetAllAsync()
+        {
+            //suposing there is always a long delay accessing data
+            return await Task.Run(() =>
+            {
+                return _buildings;
+            });
+        }
+
         public async Task<Building> GetByCodeAsync(string code)
         {
             //suposing there is always a long delay accessing data

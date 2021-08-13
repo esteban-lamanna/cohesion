@@ -1,6 +1,7 @@
 ﻿using CohesionTest.Models.Entities;
 using CohesionTest.Repository;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CohesionTest.Services
@@ -12,6 +13,11 @@ namespace CohesionTest.Services
         public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
+        }
+
+        public async Task<IEnumerable<User>> GetAllAsync()
+        {
+            return await _userRepository.GetAllAsync();
         }
 
         public async Task<User> GetByIdAsync(Guid idUser)

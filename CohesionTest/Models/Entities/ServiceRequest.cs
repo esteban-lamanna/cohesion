@@ -16,9 +16,20 @@ namespace CohesionTest.Models.Entities
 
         public Guid Id { get; set; }
         public Building Building { get; set; }
+        public User User { get; set; }
         public string Description { get; set; }
         public PossibleStates CurrentState { get; set; }
         public IList<History> History { get; set; }
+
+        public bool HasFinishedStatus
+        {
+            get
+            {
+                return CurrentState == PossibleStates.Canceled ||
+                       CurrentState == PossibleStates.Complete ||
+                       CurrentState == PossibleStates.NotApplicable;
+            }
+        }
 
         public static ServiceRequest CreateInstance()
         {

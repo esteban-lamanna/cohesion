@@ -8,7 +8,12 @@ namespace CohesionTest.Repository
 {
     public class ServiceRequestRepository : IServiceRequestRepository
     {
-        private static readonly IList<ServiceRequest> _serviceRequests = new List<ServiceRequest>();
+        private static IList<ServiceRequest> _serviceRequests = new List<ServiceRequest>();
+
+        public static void SetInitData(IList<ServiceRequest> data)
+        {
+            _serviceRequests = data;
+        }
 
         public async Task<IEnumerable<ServiceRequest>> GetAllAsync()
         {
